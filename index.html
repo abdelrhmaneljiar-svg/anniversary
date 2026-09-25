@@ -251,7 +251,6 @@
             letter-spacing: 1px;
         }
 
-        /* منظم ومظبوط عشان الصور متركبش فوق بعض */
         .collage-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -279,7 +278,6 @@
             border: 1px solid #f0f0f0;
         }
 
-        /* حركات دوران خفيفة لكل صورة عشان تبان طبيعية */
         .polaroid:nth-child(even) { transform: rotate(3deg); }
         .polaroid:nth-child(odd) { transform: rotate(-3deg); }
         .polaroid:nth-child(3n) { transform: rotate(1deg); }
@@ -422,6 +420,11 @@
 </head>
 <body>
 
+    <!-- إضافة ملف الصوت (مخفي) -->
+    <audio id="bg-music" loop>
+        <source src="our-song.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="envelope-overlay" id="envelope-overlay">
         <div class="envelope" id="envelope">
             <div class="letter-paper"></div>
@@ -484,7 +487,6 @@
         </div>
 
         <h2 class="section-title">A Million Little Moments</h2>
-        <!-- الترتيب الجديد للصور عشان متركبش فوق بعض -->
         <div class="collage-grid">
             <div class="polaroid"><img src="pic1.jpeg" alt="Memory"></div>
             <div class="polaroid"><img src="pic2.jpeg" alt="Memory"></div>
@@ -537,26 +539,31 @@
         const envelope = document.getElementById('envelope');
         const overlay = document.getElementById('envelope-overlay');
         const mainContent = document.getElementById('main-content');
+        const bgMusic = document.getElementById('bg-music');
         
         let heartsInterval;
 
-        // Envelope & Background Hearts Logic
+        // Envelope & Background Hearts & Music Logic
         envelope.addEventListener('click', () => {
             envelope.classList.add('open');
+            
+            // تشغيل الموسيقى
+            bgMusic.volume = 0.5; // الصوت على 50%
+            bgMusic.play().catch(error => console.log("الصوت محتاج تفاعل مباشر، اضغط مرة تانية"));
+
             setTimeout(() => {
                 overlay.style.opacity = '0';
                 mainContent.style.display = 'block';
                 setTimeout(() => {
                     overlay.style.display = 'none';
                     mainContent.style.opacity = '1';
-                    createBgHearts(); // تأكيد إن القلوب تشتغل أول ما الصفحة تفتح
+                    createBgHearts(); 
                 }, 1500);
             }, 1000);
         });
 
         function createBgHearts() {
             const container = document.getElementById('bg-hearts');
-            // عملت القلوب تظهر بشكل أسرع وأوضح شوية
             heartsInterval = setInterval(() => {
                 const heart = document.createElement('div');
                 heart.innerHTML = '❤️';
